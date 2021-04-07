@@ -31,11 +31,11 @@ closeBtn.addEventListener('click', e => {
   }
 });
 
-
 //Validation Patterns
 const namePattern = /^[a-zA-ZÀ-ÿ-. ]{2,}$/
 const emailPattern = /^.+\@.+\..+$/
 const birthdatePattern = /^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/
+const locationPattern = /^(?:New York|San Francisco|Seattle|Chicago|Boston|Portland)$/
 
 //Validate sumbitted modal form data
 signupForm.addEventListener('submit', e => {
@@ -46,10 +46,12 @@ signupForm.addEventListener('submit', e => {
   const prenom = signupForm.last.value;
   const email = signupForm.email.value;
   const birthdate = signupForm.birthdate.value;
+  const location = signupForm.location.value;
 
-  if (namePattern.test(nom, prenom) && emailPattern.test(email)) {
+
+  if (namePattern.test(nom, prenom) && emailPattern.test(email) && birthdatePattern.test(birthdate) && locationPattern.test(location)) {
     //sucessful Display
-    console.log('First + last & email Passed')
+    console.log('First + last + email Passed + birthdate & location')
   } else {
     //help info
     console.log('failed')
