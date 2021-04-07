@@ -11,7 +11,8 @@ function editNav() {
 const modalbg = document.querySelector(".bground");
 const modalBtn = document.querySelectorAll(".modal-btn");
 const formData = document.querySelectorAll(".formData");
-const closeBtn = document.querySelectorAll(".close");
+const closeBtn = document.querySelector(".close");
+const signupForm = document.querySelector(".signupForm");
 
 // launch modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
@@ -21,18 +22,52 @@ function launchModal() {
   modalbg.style.display = "block";
 }
 
-function closeBtnClicked() {
-  //loop over all classes with class="close"
-  closeBtn.forEach(x => {
-    //log if class was clicked by user
-    x.addEventListener("click", e => {
-      //if user clicked change modalbg {display: none}
-      if (e.isTrusted) {
-        modalbg.style.display = "none";
-      };
-    });
-  });
-};
+//close modal form
+closeBtn.addEventListener('click', e => {
+  //trigger if user clicks
+  if (e.isTrusted) {
+    //change css display to none
+    modalbg.style.display = "none";
+  }
+});
 
-// close modal event
-closeBtnClicked();
+
+//Validation Patterns
+const namePattern = /^[a-zA-ZÀ-ÿ-. ]{2,}$/
+const emailPattern = /^.+\@.+\..+$/
+const birthdatePattern = /^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/
+
+//Validate sumbitted modal form data
+signupForm.addEventListener('submit', e => {
+  e.preventDefault();
+
+  //validation
+  const nom = signupForm.first.value;
+  const prenom = signupForm.last.value;
+  const email = signupForm.email.value;
+  const birthdate = signupForm.birthdate.value;
+
+  if (namePattern.test(nom, prenom) && emailPattern.test(email)) {
+    //sucessful Display
+    console.log('First + last & email Passed')
+  } else {
+    //help info
+    console.log('failed')
+  }
+});
+
+//Trigger live Error messages 
+signupForm.addEventListener('keyup', e => {
+  console.log(e.target.value, signupForm.name.value);
+  if (namePattern.test(e.target.value)) {
+    console.log('Good')
+  }
+  if (emailPattern.test(e.target.value)) {
+    console.log('good');
+  }
+  if (birthdatePattern.test(e.target.value)) {
+    console.log('good')
+  } else {
+    console.log('bad')
+  }
+})
