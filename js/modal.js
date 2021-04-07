@@ -36,6 +36,7 @@ const namePattern = /^[a-zA-ZÀ-ÿ-. ]{2,}$/
 const emailPattern = /^.+\@.+\..+$/
 const birthdatePattern = /^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/
 const locationPattern = /^(?:New York|San Francisco|Seattle|Chicago|Boston|Portland)$/
+const quantityPattern = /^[0-9]{1,2}$/
 
 //Validate sumbitted modal form data
 signupForm.addEventListener('submit', e => {
@@ -47,11 +48,12 @@ signupForm.addEventListener('submit', e => {
   const email = signupForm.email.value;
   const birthdate = signupForm.birthdate.value;
   const location = signupForm.location.value;
+  const quantityTournaments = signupForm.quantity.value;
 
 
-  if (namePattern.test(nom, prenom) && emailPattern.test(email) && birthdatePattern.test(birthdate) && locationPattern.test(location)) {
+  if (namePattern.test(nom, prenom) && emailPattern.test(email) && birthdatePattern.test(birthdate) && locationPattern.test(location) && quantityPattern.test(quantityTournaments)) {
     //sucessful Display
-    console.log('First + last + email Passed + birthdate & location')
+    console.log('First + last + email Passed + birthdate + #ofTournaments & location')
   } else {
     //help info
     console.log('failed')
@@ -65,6 +67,12 @@ signupForm.addEventListener('keyup', e => {
     console.log('Good')
   }
   if (emailPattern.test(e.target.value)) {
+    console.log('good');
+  }
+  if (locationPattern.test(e.target.value)) {
+    console.log('good');
+  }
+  if (quantityPattern.test(e.target.value)) {
     console.log('good');
   }
   if (birthdatePattern.test(e.target.value)) {
