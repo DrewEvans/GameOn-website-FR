@@ -356,7 +356,8 @@ input[data-error]::after {
 }
 
 .btn-submit,
-.btn-signup {
+.btn-signup,
+.btn-close {
   background: #fe142f;
   display: block;
   margin: 0 auto;
@@ -379,7 +380,6 @@ input[data-error]::after {
 }
 
 .submission-notification span {
-
   overflow: hidden;
   display: inline-block;
   position: relative;
@@ -388,7 +388,6 @@ input[data-error]::after {
   font-size: 1.2em;
   text-align: center;
   padding: 100px;
-
 }
 
 .submission-notification button {

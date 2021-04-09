@@ -11,7 +11,8 @@ function editNav() {
 const modalbg = document.querySelector(".bground");
 const modalBtn = document.querySelectorAll(".modal-btn");
 const formData = document.querySelectorAll(".formData");
-const closeBtn = document.querySelector(".close");
+const closeCross = document.querySelector(".close");
+const closeBtn = document.querySelector(".btn-close");
 const signupForm = document.querySelector(".signupForm");
 
 // launch modal event
@@ -23,7 +24,7 @@ function launchModal() {
 }
 
 //close modal form
-closeBtn.addEventListener('click', e => {
+closeCross.addEventListener('click', e => {
   //trigger if user clicks
   if (e.isTrusted) {
     //change css display to none
@@ -31,6 +32,13 @@ closeBtn.addEventListener('click', e => {
   }
 });
 
+closeBtn.addEventListener('click', e => {
+  //trigger if user clicks
+  if (e.isTrusted) {
+    //change css display to none
+    modalbg.style.display = "none";
+  }
+});
 
 //get values from form locations 
 getCities = () => {
