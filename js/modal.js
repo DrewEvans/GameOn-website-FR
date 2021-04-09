@@ -43,16 +43,6 @@ getCities = () => {
 
 getCities();
 
-
-//Validation Patterns
-const namePattern = /^[a-zA-ZÀ-ÿ-. ]{2,}$/
-const emailPattern = /^.+\@.+\..+$/
-const birthdatePattern = /^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/
-
-//change locations to loop over values
-const locationPattern = /^(?:New York|San Francisco|Seattle|Chicago|Boston|Portland)$/
-const quantityPattern = /^[0-9]{0,2}$/
-
 //Validate sumbitted modal form data
 signupForm.addEventListener('submit', e => {
 
@@ -61,60 +51,80 @@ signupForm.addEventListener('submit', e => {
   validate();
 });
 
+//form Data Points
+const lastName = signupForm.last;
+const firstName = signupForm.first;
+const email = signupForm.email;
+const birthdate = signupForm.birthdate;
+const city = document.getElementsByName('location');
+const numOfTournaments = signupForm.quantity;
+const terms = signupForm.terms;
+const notification = signupForm.notifications;
+
 function validate() {
-  const nom = signupForm.first.value;
-  const prenom = signupForm.last.value;
-  const email = signupForm.email.value;
-  const birthdate = signupForm.birthdate.value;
-  const location = signupForm.location.value;
-  const numOfTournaments = signupForm.quantity.value;
-  const terms = signupForm.terms.checked;
-  const notification = signupForm.notifications.checked;
 
-  if (namePattern.test(nom)) {
-    console.log('Passed');
-    setSuccessFor(signupForm.first);
+  //Validation Patterns
+  const namePattern = /^[a-zA-ZÀ-ÿ-. ]{2,}$/
+  const emailPattern = /^.+\@.+\..+$/
+  const birthdatePattern = /^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/
+  //change locations to loop over values
+  const locationPattern = /^(?:New York|San Francisco|Seattle|Chicago|Boston|Portland)$/
+  const quantityPattern = /^[0-9]{0,2}$/
+
+  const lastValue = lastName.value;
+  const firstValue = firstName.value;
+  const emailValue = email.value;
+  const birthdateValue = birthdate.value;
+  const cityValue = city.value;
+  const numOfTournamentsValue = numOfTournaments.value;
+  const termsValue = terms.checked;
+  const notificationValue = notification.checked;
+
+  if (namePattern.test(lastValue)) {
+    setSuccessFor(lastName);
   } else {
-    setErrorFor(signupForm.first, 'Veuillez entrer 2 caractères ou plus pour le champ du nom');
+    setErrorFor(lastName, 'Veuillez entrer 2 caractères ou plus pour le champ du nom.');
   }
 
-  if (namePattern.test(prenom)) {
-    console.log('Passed');
+  if (namePattern.test(firstValue)) {
+    setSuccessFor(firstName);
   } else {
-    console.log('failed')
+    setErrorFor(firstName, 'Veuillez entrer 2 caractères ou plus pour le champ du prénom.');
   }
 
-  if (emailPattern.test(email)) {
-    console.log('Passed');
+  if (emailPattern.test(emailValue)) {
+    setSuccessFor(email);
   } else {
-    console.log('failed')
+    setErrorFor(email, "Adresse e-mail invalide");
   }
 
-  if (birthdatePattern.test(birthdate)) {
-    console.log('Passed');
+  if (birthdatePattern.test(birthdateValue)) {
+    setSuccessFor(birthdate);
   } else {
-    console.log('failed')
+    setErrorFor(birthdate, "Vous devez entrer votre date de naissance.");
   }
 
-  if (locationPattern.test(location)) {
-    console.log('Passed');
+  if (locationPattern.test(cityValue)) {
+    setSuccessFor(city);
+  } else if (cityValue === "") {
+    console.log("Left Blank: Failed")
   } else {
-    console.log('failed')
+    console.log("failed")
   }
 
-  if (quantityPattern.test(numOfTournaments)) {
-    console.log('Passed');
+  if (quantityPattern.test(numOfTournamentsValue)) {
+    setSuccessFor(numOfTournaments);
   } else {
-    console.log('failed')
+    setErrorFor(numOfTournaments, "Entrez un numéro valide à 2 chiffres.")
   }
 
-  if (terms === true) {
-    console.log('Accepted Terms');
+  if (termsValue === true) {
+    setSuccessFor(terms)
   } else {
-    console.log('Disagree with terms')
+    setErrorFor(terms, "Vous devez vérifier que vous acceptez les termes et conditions.")
   }
 
-  if (notification === true) {
+  if (notificationValue === true) {
     console.log('subscribed to newsletter');
   } else {
     console.log('declined newsletter')
@@ -122,18 +132,22 @@ function validate() {
 }
 
 function setErrorFor(input, message) {
+  //target div.formData from data input
   const formControl = input.parentElement;
 
-  //error message inside span
+  //set attribute to data-error and pass error msg
   formControl.setAttribute('data-error', message);
 
-  //add error class
+  //set attribute to data-error-visible="true" 
   formControl.setAttribute('data-error-visible', 'true');
 }
 
 function setSuccessFor(input) {
+  //target div.formData from data input
   const formControl = input.parentElement;
-  formControl.setAttribute('data-error-visible', 'false');
+
+  //remove attributes from html and display default design
+  formControl.removeAttribute('data-error-visible', '');
   formControl.removeAttribute('data-error', '');
 }
 
