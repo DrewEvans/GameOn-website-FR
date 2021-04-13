@@ -370,28 +370,30 @@ input[data-error]::after {
 }
 
 /*Submission Message Stlyes*/
-.submission-notification {
+.form-validation {
   visibility: hidden;
+}
+
+.submission-notification-default {
+  visibility: hidden;
+}
+
+.submission-notification {
+  visibility: visible;
   position: absolute;
-  display: flex;
-  flex-direction: column;
-  top: 30%;
-  right: .5%;
+  bottom: 400px;
+  right: .15em;
+  padding: 1em;
 }
 
 .submission-notification span {
   overflow: hidden;
-  display: inline-block;
+  display: flex;
   position: relative;
   color: #fff;
   font-weight: 500;
   font-size: 1.2em;
   text-align: center;
-  padding: 100px;
-}
-
-.submission-notification button {
-  margin-top: 30%;
 }
 
 /* custom select styles */

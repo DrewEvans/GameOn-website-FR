@@ -13,7 +13,9 @@ const modalBtn = document.querySelectorAll(".modal-btn");
 const formData = document.querySelectorAll(".formData");
 const closeCross = document.querySelector(".close");
 const closeBtn = document.querySelector(".btn-close");
+const btnSubmit = document.querySelector(".btn-submit");
 const signupForm = document.querySelector(".signupForm");
+const msgSuccess = document.querySelector('.submission-notification-default');
 
 // launch modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
@@ -32,14 +34,6 @@ closeCross.addEventListener('click', e => {
   }
 });
 
-closeBtn.addEventListener('click', e => {
-  //trigger if user clicks
-  if (e.isTrusted) {
-    //change css display to none
-    modalbg.style.display = "none";
-  }
-});
-
 //Validate sumbitted modal form data
 signupForm.addEventListener('submit', e => {
 
@@ -49,16 +43,39 @@ signupForm.addEventListener('submit', e => {
 
   const validatedUserData = validate(userData);
 
-  console.log(validatedUserData);
+  if (!validatedUserData) {
+    console.log('Failed')
+  } else {
+    const inputFields = document.querySelector('.input-container');
+    inputFields.classList.add("form-validation");
+    msgSuccess.classList.remove("submission-notification-default");
+    msgSuccess.classList.add("submission-notification");
+
+
+    btnSubmit.value = "Fermer";
+
+    //close modal form after submission
+    btnSubmit.addEventListener('click', e => {
+      //trigger if user clicks
+      if (e.isTrusted) {
+        //change css display to none
+        modalbg.style.display = "none";
+      }
+    });
+  }
 });
 
 function validate(userData) {
 
-  //Validation Patterns
+  //Validation regex Patterns
   const namePattern = /^[a-zA-ZÀ-ÿ-. ]{2,}$/
   const emailPattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
   const birthdatePattern = /^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/
   const quantityPattern = /^[0-9]{0,2}$/
+
+  //form inputs by user 
+
+  console.log(userData);
 
   const {
     first: firstName,
@@ -72,16 +89,20 @@ function validate(userData) {
   } = userData
 
   const locations = userData.location;
-  console.log(locations.value);
+  //console.log(locations.value);
+
+  let errors = [];
 
   for (let i = 0; i < locations.length; i++) {
     const isChecked = locations[i].checked;
-    console.log(isChecked)
+    //console.log(isChecked)
 
     if (!isChecked) {
       removeError(location);
+      break;
     } else {
       showError(location, 'Vous devez choisir une option.')
+
     }
   }
 
@@ -89,58 +110,60 @@ function validate(userData) {
     removeError(firstName);
   } else {
     showError(firstName, 'Veuillez entrer 2 caractères ou plus pour le champ du prénom.');
-    return false;
+    errors.push('error');
   }
 
   if (namePattern.test(lastName.value)) {
     removeError(lastName);
   } else {
     showError(lastName, 'Veuillez entrer 2 caractères ou plus pour le champ du nom.');
-    return false;
+    errors.push('error');
   }
 
   if (emailPattern.test(email.value)) {
     removeError(email);
   } else {
     showError(email, "Adresse e-mail invalide");
-    return false;
+    errors.push('error');
   }
 
   if (birthdatePattern.test(birthdate.value)) {
     removeError(birthdate);
   } else {
     showError(birthdate, "Vous devez entrer votre date de naissance.");
-    return false;
+    errors.push('error');
   }
 
   if (quantityPattern.test(numOfTournaments.value)) {
     removeError(numOfTournaments);
   } else {
     showError(numOfTournaments, "Entrez un numéro valide à 2 chiffres.")
-    return false;
+    errors.push('error');
   }
 
   if (terms.checked) {
     removeError(terms)
   } else {
     showError(terms, "Vous devez vérifier que vous acceptez les termes et conditions.")
-    return false;
+    errors.push('error');
   }
 
-  if (notifications.checked) {
-    console.log('yes')
-  } else {
-    console.log('no')
-  }
+  console.log(`Errors: ${errors.length}`);
 
-  console.log(lastName.value,
+  console.log(
     firstName.value,
+    lastName.value,
     email.value,
     birthdate.value,
     numOfTournaments.value,
-    location.value,
+    locations.value,
     terms.checked,
     notifications.checked);
+
+  if (errors.length > 0) {
+    return false;
+  }
+  return true;
 }
 
 function showError(input, message) {
