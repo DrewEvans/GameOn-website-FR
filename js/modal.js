@@ -37,16 +37,18 @@ closeCross.addEventListener('click', e => {
 //Validate sumbitted modal form data
 signupForm.addEventListener('submit', e => {
 
-  e.preventDefault();
-
   const userData = e.target.elements;
 
   const validatedUserData = validate(userData);
 
+  e.preventDefault();
+
   if (!validatedUserData) {
-    console.log('Failed')
+    return false;
   } else {
+
     const inputFields = document.querySelector('.input-container');
+
     inputFields.classList.add("form-validation");
     msgSuccess.classList.remove("submission-notification-default");
     msgSuccess.classList.add("submission-notification");
@@ -60,6 +62,7 @@ signupForm.addEventListener('submit', e => {
       if (e.isTrusted) {
         //change css display to none
         modalbg.style.display = "none";
+        signupForm.submit();
       }
     });
   }
@@ -75,7 +78,7 @@ function validate(userData) {
 
   //form inputs by user 
 
-  console.log(userData);
+  //console.log(userData);
 
   const {
     first: firstName,
