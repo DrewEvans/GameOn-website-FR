@@ -76,7 +76,7 @@ signupForm.addEventListener('submit', e => {
 function validate(userData) {
 
   //Validation regex Patterns
-  const namePattern = /^[a-zA-ZÀ-ÿ ,.'-]{2,}$/
+  const namePattern = /^[a-zA-ZÀ-ÿ,.'-]{2,}$/
   const spacesPattern = /[\s]{2,}/
   const emailPattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
   const birthdatePattern = /^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/
@@ -124,17 +124,17 @@ function validate(userData) {
     (showError(location1, "Vous devez choisir une option."), errors.push('error'))
 
   //test firstName input agaisnt validation regex
-  namePattern.test(firstName.value.trim()) && !spacesPattern.test(firstName.value) ?
+  namePattern.test(firstName.value) && !spacesPattern.test(firstName.value) ?
     removeError(firstName) :
     (showError(firstName, 'Veuillez entrer 2 caractères ou plus pour le champ du nom.'), errors.push('error'))
 
   //test lastName input agaisnt validation regex
-  namePattern.test(lastName.value.trim()) && !spacesPattern.test(lastName.value) ?
+  namePattern.test(lastName.value) && !spacesPattern.test(lastName.value) ?
     removeError(lastName) :
     (showError(lastName, 'Veuillez entrer 2 caractères ou plus pour le champ du nom.'), errors.push('error'))
 
   //test email input agaisnt validation regex
-  emailPattern.test(email.value.trim()) ?
+  emailPattern.test(email.value) ?
     removeError(email) :
     (showError(email, "Adresse e-mail invalide"), errors.push('error'))
 
@@ -155,9 +155,9 @@ function validate(userData) {
 
   //Submitted userData
   console.log(
-    firstName.value.trim(),
-    lastName.value.trim(),
-    email.value.trim(),
+    firstName.value,
+    lastName.value,
+    email.value,
     birthdate.value,
     numOfTournaments.value,
     locations.value,
