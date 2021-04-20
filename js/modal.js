@@ -1,12 +1,3 @@
-function editNav() {
-  var x = document.getElementById("myTopnav");
-  if (x.className === "topnav") {
-    x.className += " responsive";
-  } else {
-    x.className = "topnav";
-  }
-}
-
 // DOM Elements
 const modalbg = document.querySelector(".bground");
 const modalBtn = document.querySelectorAll(".modal-btn");
@@ -16,6 +7,15 @@ const closeBtn = document.querySelector(".btn-close");
 const btnSubmit = document.querySelector(".btn-submit");
 const signupForm = document.querySelector(".signupForm");
 const msgSuccess = document.querySelector('.submission-notification-default');
+
+function editNav() {
+  var x = document.getElementById("myTopnav");
+  if (x.className === "topnav") {
+    x.className += " responsive";
+  } else {
+    x.className = "topnav";
+  }
+}
 
 // launch modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
@@ -76,10 +76,11 @@ signupForm.addEventListener('submit', e => {
 function validate(userData) {
 
   //Validation regex Patterns
-  const namePattern = /^[a-zA-ZÀ-ÿ-. ]{2,}$/
+  const namePattern = /^[a-zA-ZÀ-ÿ ,.'-]{2,}$/
+  const spacesPattern = /[\s]{2,}/
   const emailPattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
   const birthdatePattern = /^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/
-  const quantityPattern = /^[0-9]{2,2}$/
+  const quantityPattern = /^[0-9]{0,2}$/
 
   //user Data inputs from form submission
   const {
@@ -118,31 +119,45 @@ function validate(userData) {
   // to var errors 
 
   //is location checked test  
-  locationChecked ? removeError(location1) : (showError(location1, "Vous devez choisir une option."), errors.push('error'))
+  locationChecked ?
+    removeError(location1) :
+    (showError(location1, "Vous devez choisir une option."), errors.push('error'))
 
   //test firstName input agaisnt validation regex
-  namePattern.test(firstName.value) ? removeError(firstName) : (showError(firstName, 'Veuillez entrer 2 caractères ou plus pour le champ du nom.'), errors.push('error'))
+  namePattern.test(firstName.value.trim()) && !spacesPattern.test(firstName.value) ?
+    removeError(firstName) :
+    (showError(firstName, 'Veuillez entrer 2 caractères ou plus pour le champ du nom.'), errors.push('error'))
 
   //test lastName input agaisnt validation regex
-  namePattern.test(lastName.value) ? removeError(lastName) : (showError(lastName, 'Veuillez entrer 2 caractères ou plus pour le champ du nom.'), errors.push('error'))
+  namePattern.test(lastName.value.trim()) && !spacesPattern.test(lastName.value) ?
+    removeError(lastName) :
+    (showError(lastName, 'Veuillez entrer 2 caractères ou plus pour le champ du nom.'), errors.push('error'))
 
   //test email input agaisnt validation regex
-  emailPattern.test(email.value) ? removeError(email) : (showError(email, "Adresse e-mail invalide"), errors.push('error'))
+  emailPattern.test(email.value.trim()) ?
+    removeError(email) :
+    (showError(email, "Adresse e-mail invalide"), errors.push('error'))
 
   //test birthdate input agaisnt validation regex
-  birthdatePattern.test(birthdate.value) ? removeError(birthdate) : (showError(birthdate, "Vous devez entrer votre date de naissance."), errors.push('error'))
+  birthdatePattern.test(birthdate.value) ?
+    removeError(birthdate) :
+    (showError(birthdate, "Vous devez entrer votre date de naissance."), errors.push('error'))
 
   //test firstName input agaisnt validation regex
-  quantityPattern.test(numOfTournaments.value) ? removeError(numOfTournaments) : (showError(numOfTournaments, "Entrez un numéro valide à 2 chiffres."), errors.push('error'))
+  quantityPattern.test(numOfTournaments.value) ?
+    removeError(numOfTournaments) :
+    (showError(numOfTournaments, "Entrez un numéro valide à 2 chiffres."), errors.push('error'))
 
   //test terms checkbox to see if checked
-  terms.checked ? removeError(terms) : (showError(terms, "Vous devez vérifier que vous acceptez les termes et conditions."), errors.push('error'))
+  terms.checked ?
+    removeError(terms) :
+    (showError(terms, "Vous devez vérifier que vous acceptez les termes et conditions."), errors.push('error'))
 
   //Submitted userData
   console.log(
-    firstName.value,
-    lastName.value,
-    email.value,
+    firstName.value.trim(),
+    lastName.value.trim(),
+    email.value.trim(),
     birthdate.value,
     numOfTournaments.value,
     locations.value,
